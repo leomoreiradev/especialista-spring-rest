@@ -16,6 +16,8 @@ target/
 ### IntelliJ IDEA ###
 .idea
 .idea/
+.sonarlint
+.sonarlint/
 *.iws
 *.iml
 *.ipr
