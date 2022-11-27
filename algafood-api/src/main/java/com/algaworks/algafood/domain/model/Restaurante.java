@@ -27,6 +27,7 @@ public class Restaurante {
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 
+	//Muitos restaurantes tem uma cozinha
 	@ManyToOne
 	@JoinColumn(name = "cozinha_id", nullable = false) // nome da FK na tabela Restaurante
 	private Cozinha cozinha;
