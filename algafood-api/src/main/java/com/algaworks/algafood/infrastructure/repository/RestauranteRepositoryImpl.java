@@ -25,7 +25,7 @@ public class RestauranteRepositoryImpl implements RestauranteRepository {
 	}
 
 	@Override
-	public Restaurante porId(Long id) {
+	public Restaurante buscar(Long id) {
 		return manager.find(Restaurante.class, id);
 	}
 
@@ -38,7 +38,7 @@ public class RestauranteRepositoryImpl implements RestauranteRepository {
 	@Override
 	@Transactional
 	public void remover(Restaurante restaurante) {
-		restaurante = porId(restaurante.getId());
+		restaurante = buscar(restaurante.getId());
 		manager.remove(restaurante);
 	}
 }
