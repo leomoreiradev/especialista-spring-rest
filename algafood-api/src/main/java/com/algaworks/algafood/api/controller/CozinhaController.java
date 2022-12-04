@@ -1,7 +1,10 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
+import com.algaworks.algafood.domain.exception.EntidadeNaoEncotradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,6 +22,9 @@ public class CozinhaController {
 
     @Autowired
     private CozinhaRepository cozinhaRepository;
+
+    @Autowired
+    private CadastroCozinhaService cadastroCozinhaService;
 
     @GetMapping
     public List<Cozinha> listar() {
@@ -45,7 +51,7 @@ public class CozinhaController {
 
     @PostMapping
     public ResponseEntity<Cozinha> adicionar(@RequestBody Cozinha cozinha) {
-        cozinha = cozinhaRepository.salvar(cozinha);
+        cozinha = cadastroCozinhaService.salvar(cozinha);
         return ResponseEntity.ok(cozinha);
     }
 
@@ -63,14 +69,15 @@ public class CozinhaController {
     @DeleteMapping(value = "/{cozinhaId}")
     public ResponseEntity<Void> remover(@PathVariable Long cozinhaId) {
         try {
-            Cozinha cozinha = cozinhaRepository.porId(cozinhaId);
-            if(cozinha != null) {
-                cozinhaRepository.remover(cozinha);
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.notFound().build();
-        } catch (DataIntegrityViolationException e) {
-            return  ResponseEntity.status(HttpStatus.CONFLICT).build();
+            cadastroCozinhaService.excluir(cozinhaId);
+            return ResponseEntity.noContent().build();
+
+        }
+        catch (EntidadeNaoEncotradaException e) {
+             return ResponseEntity.notFound().build();
+        }
+        catch (EntidadeEmUsoException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 }
