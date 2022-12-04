@@ -17,7 +17,7 @@ public class Restaurante {
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long Id;
+	private Long id;
 
 	@Column(nullable = false)
 	private String nome;
